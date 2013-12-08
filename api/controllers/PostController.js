@@ -41,18 +41,15 @@
    		if (err) {
    			return console.log(err);
 
-         }else {
-           console.log("Post created:", post);
-           posts = Post.find({}, function(err, posts) {
-            console.log("create title:"+posts[0].title);
-            Post.publishCreate({
-               id: post.id,
-               title: post.title,
-               description: post.description
-            });
-            return res.view('posts/index',{ posts: posts});
+       }else {
+         console.log("Post created:", post);
+         Post.publishCreate({
+           id: post.id,
+           title: post.title,
+           description: post.description
          });
-        }
+         res.redirect('posts');
+       }
      } );
 
    },
@@ -60,30 +57,70 @@
 
    },
    edit: function(req,res){
+    console.log("edit:"+req.params['id']);
+    Post.findOne(req.params['id']).done(function(err,post){
+      if(err){
+        return console.log(err);
+      }else{
+        return res.view('posts/edit',{post: post});
+      }
+    });
+  },
+  update: function(req,res){
+   console.log("update:"+req.param('id'));
+   post = Post.findOne(req.param('id')).done(function(err,post){
+    if(err){
+      return console.log(err);
+    }else{
+      post.title = req.param('title');
+      post.description = req.param('description');
+      post.save(function(err,post){
+        if(err){
+          return console.log(err);
+        }else{
+          Post.publishUpdate( post.id, {
+            title: post.title,
+            description: post.description
+          });
+          res.redirect('posts');
+        }
+      });
 
-   },
-   update: function(req,res){
+    }
+  });
 
-   },
-   destroy: function(req,res){
+ },
+ destroy: function(req,res){
+   console.log("delete:"+req.param('id'));
+   Post.findOne(req.param('id')).done(function(err,post){
+    if(err){
+      return console.log(err);
+    }else{
+     post.destroy(function(err){
+      if(err){
 
-   },
-   index: function(req,res){
-   	console.log("index");
-   	posts = Post.find({}, function(err, posts) {
-   		console.log("TITLE:"+posts[0].title);
-   		return res.view('posts/index',{ posts: posts});
-   	});
-   	
-   },
-   binding: function(req,res){
-     
-     Post.find().exec(function (err, posts) {
-      Post.subscribe(req.socket);
-      // Subscribe the requesting socket (e.g. req.socket) to all users (e.g. users)
-      Post.subscribe(req.socket, posts);
-   });
-  }
+      }else{
+        Post.publishDestroy(post.id);
+        res.redirect('posts');
+      }
+    });
+   }
+ });
+ },
+ index: function(req,res){
+  console.log("index");
+  posts = Post.find({sort: 'title'}, function(err, posts) {
+   return res.view('posts/index',{ posts: posts});
+ });
+
+},
+binding: function(req,res){
+
+ Post.find().exec(function (err, posts) {
+  Post.subscribe(req.socket);
+  Post.subscribe(req.socket, posts);
+});
+}
 
 
 };

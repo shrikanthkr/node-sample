@@ -1,0 +1,16 @@
+Edit page
+
+
+
+<div class="row">
+    <div class="large-12 columns">
+    	<form method='post' action='/posts_edit'>
+    	<label>Post Title</label>
+    	<input 	type='text' name='title' value="<%=post.title%>"/ > 
+      <label>Post</label>
+      <textarea name='description'><%=post.description%></textarea>
+      <input type="hidden" name="id" value="<%=post.id%>"/>
+      <input type='submit' value='Update'>
+      </form>
+    </div>
+  </div>

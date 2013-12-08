@@ -28,8 +28,10 @@
       // server.
       ///////////////////////////////////////////////////////////
       log('New comet message received :: ', message);
-      log("Comet title:;"+message.data.title);
-      $('#post_list').append('<li>'+message.data.title+'</li>');
+      //log("Comet title:;"+message.data.title);
+      log("Comet Verb:;"+message['verb']);
+      if(message['verb'] =='create')
+        $('#post_list').append('<li>'+message.data.title+'</li>');
       //////////////////////////////////////////////////////
 
     });

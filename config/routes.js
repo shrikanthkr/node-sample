@@ -46,7 +46,19 @@
   '/posts/new': {
     controller: 'PostController',
     action: 'new'
-  }
+  },
+  '/posts/:id': {
+    controller: 'PostController',
+    action: 'edit'
+  },
+  'post /posts_edit': {
+   controller: 'PostController',
+   action: 'update'
+ },
+  'post /posts_delete/:id': {
+   controller: 'PostController',
+   action: 'destroy'
+ }
 
   /*
   // But what if you want your home page to display

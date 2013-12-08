@@ -1,6 +1,13 @@
 Index page of user.
  <ul id="post_list">
     <% _.each(posts, function (post) { %>
-    <li><%= post.title %></li>
+    <li>
+    	<a href='/posts/<%=post.id%>'><%= post.title %></a>
+    	<form action='posts_delete/<%=post.id%>' method='post'>
+    		<input type='submit' value='Delete'/>
+    	</form>
+
+    </li>
+
     <% }) %>
   </ul>
