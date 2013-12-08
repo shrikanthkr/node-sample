@@ -41,14 +41,19 @@
    		if (err) {
    			return console.log(err);
 
-  // The User was created successfully!
-}else {
-	console.log("Post created:", post);
-	posts = Post.find();
-	console.log(posts);
-	return res.view('posts/index',{posts: posts});
-}
-} );
+         }else {
+           console.log("Post created:", post);
+           posts = Post.find({}, function(err, posts) {
+            console.log("create title:"+posts[0].title);
+            Post.publishCreate({
+               id: post.id,
+               title: post.title,
+               description: post.description
+            });
+            return res.view('posts/index',{ posts: posts});
+         });
+        }
+     } );
 
    },
    show: function(req,res){
@@ -71,6 +76,14 @@
    	});
    	
    },
+   binding: function(req,res){
+     
+     Post.find().exec(function (err, posts) {
+      Post.subscribe(req.socket);
+      // Subscribe the requesting socket (e.g. req.socket) to all users (e.g. users)
+      Post.subscribe(req.socket, posts);
+   });
+  }
 
 
 };

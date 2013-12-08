@@ -35,6 +35,10 @@
   '/': {
     view: 'home/index'
   },
+  'post /posts': {
+    controller: 'PostController',
+    action: 'create',
+  },
   '/posts': {
     controller: 'PostController',
     action: 'index'
@@ -42,10 +46,6 @@
   '/posts/new': {
     controller: 'PostController',
     action: 'new'
-  },
-  'post /posts': {
-    controller: 'PostController',
-    action: 'create',
   }
 
   /*

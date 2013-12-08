@@ -8,17 +8,18 @@
  */
 
 
-(function (io) {
+ (function (io) {
 
   // as soon as this file is loaded, connect automatically, 
   var socket = io.connect();
   if (typeof console !== 'undefined') {
-    log('Connecting to Sails.js...');
+    log('Connecting to Sails.js... Edited');
   }
 
   socket.on('connect', function socketConnected() {
 
     // Listen for Comet messages from Sails
+
     socket.on('message', function messageReceived(message) {
 
       ///////////////////////////////////////////////////////////
@@ -27,9 +28,14 @@
       // server.
       ///////////////////////////////////////////////////////////
       log('New comet message received :: ', message);
+      log("Comet title:;"+message.data.title);
+      $('#post_list').append('<li>'+message.data.title+'</li>');
       //////////////////////////////////////////////////////
 
     });
+    socket.get('/post/binding');
+    log('Subscribing to post');
+
 
 
     ///////////////////////////////////////////////////////////
@@ -38,9 +44,9 @@
     // the Sails.js server.
     ///////////////////////////////////////////////////////////
     log(
-        'Socket is now connected and globally accessible as `socket`.\n' + 
-        'e.g. to send a GET request to Sails, try \n' + 
-        '`socket.get("/", function (response) ' +
+      'Socket is now connected and globally accessible as `socket`.\n' + 
+      'e.g. to send a GET request to Sails, try \n' + 
+      '`socket.get("/", function (response) ' +
         '{ console.log(response); })`'
     );
     ///////////////////////////////////////////////////////////
@@ -68,4 +74,4 @@
   // you can replace `window.io` with your own `io` here:
   window.io
 
-);
+  );
